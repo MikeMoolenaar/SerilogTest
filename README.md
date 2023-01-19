@@ -1,5 +1,5 @@
 # SerilogTest
-Simple Dotnet API with Serilog funneling to Elasticsearch + kibana.
+Simple Dotnet API app with Serilog funneling to Elasticsearch + kibana.
 ## Setting up Elasticsearch + Kibana
 - Spin up containers with `docker-compose up`
 - Go to http://localhost:5601
