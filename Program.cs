@@ -57,9 +57,8 @@ app.MapGet("/inline-properties", () =>
     Log.Information("Handled product {productId}", productId);
 
     var product = new {name = "SomeProduct", price = 30.20};
-    Log.Information("Handled product {@product}", product);
-    Log.Information("Handled product {product}", product); // Also includes name and price in a field!
-    
+    Log.Information("Handled product {@product}", product); // Also indexes name and price so they can be searched!
+
     throw new NullReferenceException("Oops");
 });
 
