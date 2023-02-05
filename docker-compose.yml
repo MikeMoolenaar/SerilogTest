@@ -15,9 +15,8 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - xpack.security.enabled=false
+      - transport.host=0.0.0.0
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    networks:
-      - elastic
 
   kibana:
     container_name: kibana
@@ -28,12 +27,31 @@ services:
       - elasticsearch
     environment:
       - ELASTICSEARCH_URL=http://localhost:9200
-    networks:
-      - elastic
 
-networks:
-  elastic:
-    driver: bridge
+  
+  elastalert:
+    image: 'praecoapp/elastalert-server'
+    ports:
+      - 3030:3030
+      - 3333:3333
+    volumes:
+      - ./praeco/config/elastalert.yaml:/opt/elastalert/config.yaml
+      - ./praeco/config/api.config.json:/opt/elastalert-server/config/config.json
+      - ./praeco/rules:/opt/elastalert/rules
+      - ./praeco/rule_templates:/opt/elastalert/rule_templates
+    depends_on:
+      - elasticsearch
+
+  webapp:
+    image: 'praecoapp/praeco'
+    ports:
+      - 8080:8080
+    depends_on:
+      - elastalert
+    volumes:
+      - ./praeco/public/praeco.config.json:/var/www/html/praeco.config.json
+      - ./praeco/nginx_config/nginx.conf:/etc/nginx/nginx.conf
+      - ./praeco/nginx_config/default.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   elasticsearch-data:

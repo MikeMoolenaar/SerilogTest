@@ -22,7 +22,7 @@ builder.Host.UseSerilog((hostContext, serviceProvider, configuration) =>
         .Enrich.WithMachineName()
         .Enrich.WithProperty("Environment", environmentName)
         .Enrich.WithProperty("Version", Assembly.GetEntryAssembly().GetName().Version)
-        .WriteTo.Console(new CompactJsonFormatter())
+        .WriteTo.Console(/*new CompactJsonFormatter()*/)
         .WriteTo.Elasticsearch(ConfigureElasticSink(hostContext.Configuration, environmentName));
 });
 
@@ -58,7 +58,6 @@ app.MapGet("/inline-properties", () =>
 
     var product = new {name = "SomeProduct", price = 30.20};
     Log.Information("Handled product {@product}", product); // Also indexes name and price so they can be searched!
-
     throw new NullReferenceException("Oops");
 });
 

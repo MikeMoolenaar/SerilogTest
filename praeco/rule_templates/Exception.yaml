@@ -1,0 +1,35 @@
+alert:
+  - "discord"
+alert_subject: "{0} occurred with message \"{1}\""
+alert_subject_args:
+  - "exceptions[0]ClassName"
+  - "exceptions[0]Message"
+alert_text: "{0} \nOwner: {1} \nURL: http://localhost:5601/app/discover#/view/0e3c5c60-9cf9-11ed-9768-57d061bfd00a?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-1y%2Fd,to:now))&_a=(columns:!(level,message,fields.RequestId,fields.RequestPath),filters:!(),grid:(columns:('@timestamp':(width:210),level:(width:128))),hideChart:!f,index:'7f89552d-1629-4bad-bf51-4f69ca32bd5b',interval:auto,query:(language:kuery,query:'_id:%22{2}%22'),sort:!(!('@timestamp',desc)))"
+alert_text_args:
+  - "exceptions[0]StackTraceString"
+  - "owner"
+  - "_id"
+alert_text_type: "alert_text_only"
+discord_embed_icon_url: "https://humancoders-formations.s3.amazonaws.com/uploads/course/logo/38/thumb_bigger_formation-elasticsearch.png"
+discord_webhook_url: "https://discord.com/api/webhooks/1071887697767039190/sJOOj4SvhXrSTWcwuIIWFbXOs91tVFziTv3hRNineTjt_bU0-UZkJFvhY5puE_FrF2k2"
+filter:
+  - query:
+      query_string:
+        query: "level:Error AND fields.RequestPath:\"REQUEST_PATH\""
+generate_kibana_discover_url: false
+import: "BaseRule.config"
+index: "serilogtest-*"
+is_enabled: true
+kibana_discover_from_timedelta:
+  minutes: 10
+kibana_discover_to_timedelta:
+  minutes: 10
+match_enhancements: []
+name: "Exception"
+owner: "Nobody"
+realert:
+  minutes: 10
+timestamp_field: "@timestamp"
+timestamp_type: "iso"
+type: "any"
+use_strftime_index: false
