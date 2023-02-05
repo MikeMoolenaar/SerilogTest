@@ -46,6 +46,6 @@ writeback_index: praeco_elastalert_status
 # If an alert fails for some reason, ElastAlert will retry
 # sending the alert until this time period has elapsed
 alert_time_limit:
-  days: 2
+  seconds: 8
 
 skip_invalid: True
