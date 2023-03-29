@@ -1,9 +1,7 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Serilog;
 using Serilog.Context;
-using Serilog.Formatting.Compact;
-using Serilog.Formatting.Elasticsearch;
-using Serilog.Formatting.Json;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.ThrowContext;
 
@@ -59,6 +57,25 @@ app.MapGet("/inline-properties", () =>
     var product = new {name = "SomeProduct", price = 30.20};
     Log.Information("Handled product {@product}", product); // Also indexes name and price so they can be searched!
     throw new NullReferenceException("Oops");
+});
+
+app.MapGet("/log-spam-woop-woop", () =>
+{
+    // Create random logs
+    var random = new Random(42) ;
+    for (int i = 0; i < 100_000; i++)
+    {
+        var rand = random.Next(0, 4);
+        if (rand == 0)
+            Log.Information("Spam {i}", i);
+        else if (rand == 1)
+            Log.Warning("Spam {i}", i);
+        else if (rand == 2)
+            Log.Error("Spam {i}", i);
+        else if (rand == 3)
+            Log.Fatal("Spam {i}", i);
+    }
+    return "Done!";
 });
 
 app.Run();
