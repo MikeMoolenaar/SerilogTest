@@ -12,6 +12,7 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
     <PackageReference Include="Serilog.ThrowContext" Version="0.1.2" />
+    <PackageReference Include="Elastic.Apm.NetCoreAll" Version="1.22.0" />
   </ItemGroup>
 
 </Project>

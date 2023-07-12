@@ -1,5 +1,5 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Elastic.Apm.NetCoreAll;
 using Serilog;
 using Serilog.Context;
 using Serilog.Sinks.Elasticsearch;
@@ -7,9 +7,11 @@ using Serilog.ThrowContext;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
+
 // Enable Serilog debugging, handy for Elasticsearch errors
 // Serilog.Debugging.SelfLog.Enable(Console.WriteLine); 
 
+builder.Host.UseAllElasticApm();
 builder.Host.UseSerilog((hostContext, serviceProvider, configuration) =>
 {
     var environmentName = hostContext.HostingEnvironment.EnvironmentName;
@@ -37,12 +39,14 @@ app.MapGet("/oops", (IDiagnosticContext diagnosticContext) =>
 {
     // Will be included in all of the logs in this scope (including the Exception log!)
     using var _ = LogContext.PushProperty("SomeProperty", "900");
+
+    var s = "Een woord of iets";
     
     Log.Information("Sup dude");
     throw new NullReferenceException("Oops");
 });
 
-app.MapGet("/context-properties", () =>
+app.MapGet("/context-properties", (context) =>
 {
     Log.ForContext("SomeId", "Products-1-A")
         .Information("Handled product");
